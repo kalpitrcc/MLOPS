@@ -70,7 +70,7 @@ pipeline {
         apiVersion: v1
         kind: PersistentVolumeClaim
 	metadata:
-         name: claim1
+          name: claim1
         spec:
           accessModes:
             - ReadWriteMany
