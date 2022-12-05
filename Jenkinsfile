@@ -83,6 +83,7 @@ pipeline {
       steps {
         container('modeltraining') {
           sh 'ls -lrt ./'
+	  sh 'find / -name *.csv'
         }
       }
     }
