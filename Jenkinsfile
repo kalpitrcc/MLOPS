@@ -89,6 +89,7 @@ pipeline {
 	  sh 'date'
         }
       }
+    }
      stage('training-test') {
       steps {
         container('modeltraining') {
@@ -99,7 +100,6 @@ pipeline {
       }
     }
    }
-    }
   }
     post {
       always {
