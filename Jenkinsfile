@@ -68,6 +68,18 @@ pipeline {
         kubernetes {
           yaml """
         apiVersion: v1
+        kind: PersistentVolumeClaim
+	metadata:
+         name: claim1
+        spec:
+          accessModes:
+            - ReadWriteMany
+          storageClassName: ""
+          resources:
+            requests:
+              storage: 9Gi
+	---
+        apiVersion: v1
         kind: Pod
         spec:
           containers:
@@ -76,6 +88,15 @@ pipeline {
             command:
             - cat
             tty: true
+            volumeMounts:
+            - mountPath: "/home/jovyan/results/*"
+              name: "workspace-volume"
+              readOnly: false
+          volumes:
+            - name: "workspace-volume"
+              persistentVolumeClaim:
+                claimName: claim1
+
         """.stripIndent()
         }
       }
@@ -90,16 +111,7 @@ pipeline {
         }
       }
     }
-     stage('training-test') {
-      steps {
-        container('modeltraining') {
-          sh 'ls -ltr'
-	  sh 'pwd'
-	  sh 'chmod +x train.py'
-	  sh 'python3 train.py'
-      }
-    }
-   }
+
   }
     post {
       always {
