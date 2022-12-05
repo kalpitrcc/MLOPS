@@ -68,18 +68,6 @@ pipeline {
         kubernetes {
           yaml """
         apiVersion: v1
-        kind: PersistentVolumeClaim
-	metadata:
-         name: claim1
-        spec:
-          accessModes:
-            - ReadWriteMany
-          storageClassName: ""
-          resources:
-            requests:
-              storage: 9Gi
-	---
-        apiVersion: v1
         kind: Pod
         spec:
           containers:
