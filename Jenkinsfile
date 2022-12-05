@@ -63,7 +63,7 @@ pipeline {
       }
     }
    }
-   stage('Model') {
+   stage('Pre-processing-test') {
       agent {
         kubernetes {
           yaml """
@@ -82,8 +82,13 @@ pipeline {
       
       steps {
         container('modeltraining') {
-          sh 'ls -lrt ./'
-	  sh 'find / -name *.csv'
+	  sh 'python3 --version'
+          sh 'chmod +x preprocessing.py'
+	  sh 'pwd'
+	  sh 'python3 preprocessing.py'
+	  sh 'python3 train.py'
+	  sh 'find / -name train_metadata.json'
+	  sh 'date'
         }
       }
     }
