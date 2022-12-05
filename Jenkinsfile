@@ -63,7 +63,7 @@ pipeline {
       }
     }
    }
-   stage('Model') {
+   stage('Pre-processing-test') {
       agent {
         kubernetes {
           yaml """
@@ -76,16 +76,29 @@ pipeline {
             command:
             - cat
             tty: true
+            volumeMounts:
+            - mountPath: "/home/jovyan/results/*"
+              name: "workspace-volume"
+          volumes:
+            - name: "workspace-volume"
+              persistentVolumeClaim:
+                claimName: claim1
+
         """.stripIndent()
         }
       }
       
       steps {
         container('modeltraining') {
-          sh 'ls -lrt ./'
+	  sh 'python3 --version'
+          sh 'chmod +x preprocessing.py'
+	  sh 'pwd'
+	  sh 'python3 preprocessing.py'
+	  sh 'date'
         }
       }
     }
+
   }
     post {
       always {
