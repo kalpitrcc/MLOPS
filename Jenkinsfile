@@ -93,9 +93,9 @@ pipeline {
      stage('training-test') {
       steps {
         container('modeltraining') {
-          sh 'chmod +x train.py'
+          sh 'ls -ltr'
 	  sh 'pwd'
-	  sh 'ls -ltra'
+	  sh 'chmod +x train.py'
 	  sh 'python3 train.py'
       }
     }
