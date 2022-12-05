@@ -79,39 +79,14 @@ pipeline {
         """.stripIndent()
         }
       }
+      
       steps {
         container('modeltraining') {
 	  sh 'python3 --version'
           sh 'chmod +x preprocessing.py'
 	  sh 'pwd'
 	  sh 'python3 preprocessing.py'
-	  sh 'date'
-        }
-      }
-    }
-  }
-   stage('train-test') {
-      agent {
-        kubernetes {
-          yaml """
-        apiVersion: v1
-        kind: Pod
-        spec:
-          containers:
-          - name: modeltraining
-            image: "devsds/modeltraining:${BUILD_NUMBER}"
-            command:
-            - cat
-            tty: true
-        """.stripIndent()
-        }
-      } 
-      steps {
-        container('modeltraining') {
-          sh 'chmod +x train.py'
-	  sh 'pwd'
 	  sh 'python3 train.py'
-	  sh 'ls -ltra'
 	  sh 'find / -name train_metadata.json'
 	  sh 'date'
         }
