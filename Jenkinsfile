@@ -68,18 +68,6 @@ pipeline {
         kubernetes {
           yaml """
         apiVersion: v1
-        kind: PersistentVolumeClaim
-	metadata:
-          name: claim1
-        spec:
-          accessModes:
-            - ReadWriteMany
-          storageClassName: ""
-          resources:
-            requests:
-              storage: 9Gi
-	---
-        apiVersion: v1
         kind: Pod
         spec:
           containers:
@@ -91,7 +79,6 @@ pipeline {
             volumeMounts:
             - mountPath: "/home/jovyan/results/*"
               name: "workspace-volume"
-              readOnly: false
           volumes:
             - name: "workspace-volume"
               persistentVolumeClaim:
