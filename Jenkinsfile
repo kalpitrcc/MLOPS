@@ -86,11 +86,19 @@ pipeline {
           sh 'chmod +x preprocessing.py'
 	  sh 'pwd'
 	  sh 'python3 preprocessing.py'
-	  sh 'python3 train.py'
-	  sh 'find / -name train_metadata.json'
 	  sh 'date'
         }
       }
+     stage('training-test') {
+      steps {
+        container('modeltraining') {
+          sh 'chmod +x train.py'
+	  sh 'pwd'
+	  sh 'ls -ltra'
+	  sh 'python3 train.py'
+      }
+    }
+   }
     }
   }
     post {
